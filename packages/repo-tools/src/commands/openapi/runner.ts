@@ -24,7 +24,7 @@ export async function runner(
   paths: string[],
   command: (dir: string, options?: { port: number }) => Promise<void>,
   options?: {
-    concurrencyLimit: number;
+    concurrencyLimit?: number;
     startingPort?: number;
   },
 ) {
