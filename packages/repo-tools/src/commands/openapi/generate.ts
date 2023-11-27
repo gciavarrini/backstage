@@ -30,7 +30,7 @@ type Options = {
 } & OptionValues;
 const exec = promisify(execCb);
 
-async function generate(
+export async function generate(
   directoryPath: string,
   config?: { skipMissingYamlFile: boolean },
 ) {
