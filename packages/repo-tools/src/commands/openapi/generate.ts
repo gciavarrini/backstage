@@ -23,7 +23,11 @@ import { runner } from './runner';
 import { TS_SCHEMA_PATH, YAML_SCHEMA_PATH } from './constants';
 import { promisify } from 'util';
 import { exec as execCb } from 'child_process';
+import { OptionValues } from 'commander';
 
+type Options = {
+  packagePath?: string;
+} & OptionValues;
 const exec = promisify(execCb);
 
 async function generate(
@@ -67,9 +71,18 @@ export const createOpenApiRouter = async (
   }
 }
 
-export async function bulkCommand(paths: string[] = []): Promise<void> {
-  const resultsList = await runner(paths, (dir: string) =>
-    generate(dir, { skipMissingYamlFile: true }),
+export async function bulkCommand(
+  paths: string[] = [],
+  opts: Options,
+): Promise<void> {
+  const options = {
+    packagePath: opts.packagePath,
+  };
+  const resultsList = await runner(
+    paths,
+    (dir: string) =>
+      generate(dir, { skipMissingYamlFile: opts.skipMissingYamlFile ?? true }),
+    options,
   );
 
   let failed = false;

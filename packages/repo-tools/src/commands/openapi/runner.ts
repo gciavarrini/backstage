@@ -26,9 +26,18 @@ export async function runner(
   options?: {
     concurrencyLimit?: number;
     startingPort?: number;
+    packagePath?: string;
   },
 ) {
-  const packages = await resolvePackagePaths({ paths });
+  // If packagePath has been explicitely defined use it, otherwise get the root
+  let packages: string[];
+
+  if (options && options.packagePath) {
+    packages = [options?.packagePath];
+  } else {
+    packages = await resolvePackagePaths({ paths });
+  }
+
   const limit = pLimit(options?.concurrencyLimit ?? 5);
   let port =
     options?.startingPort &&

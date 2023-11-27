@@ -39,6 +39,17 @@ function registerSchemaCommand(program: Command) {
     .description(
       'Generates a Typescript file from an OpenAPI yaml spec. For use with the `@backstage/backend-openapi-utils` ApiRouter type.',
     )
+    .option(
+      '-p, --packagePath <packagePath...>',
+      'A list of package paths (default is root dir)',
+      (value, previous: string[]) => previous.concat(value),
+      [],
+    )
+    .option(
+      '--skipMissingYamlFile <boolean>',
+      'skip validation (default is true',
+    )
+    .argument('[paths]')
     .action(lazy(() => import('./openapi/generate').then(m => m.bulkCommand)));
 
   openApiCommand
